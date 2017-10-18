@@ -3,9 +3,9 @@
 # from the orthomcl database, the OG in which that seq was classified, description of que-
 # ry sequence, score of the blast result and eval of the blast result.  
 
-path = '/Users/marioceron/Documents/katzlab/duplications/orthomcl-release5/Dictyostelium_discoideum/BlastReports/'
+path = '/Users/marioceron/Documents/katzlab/duplications/orthomcl-release5/test2/BlastReports/'
 
-out = File.open(path + 'summary.txt', 'w')
+out = File.open(path + '../summary.txt', 'w')
 
 reportsBlast = Dir.open(path)
 

@@ -9,7 +9,7 @@
 # - folder with genomic sequences
 # - folder with CDSs
 
-folder = 'Dictyostelium_discoideum/'
+folder = 'test2/'
 path = '/Users/marioceron/Documents/katzlab/duplications/orthomcl-release5/'
 out = File.open(path + folder + 'mapInfo.txt', 'w')
 toMap = File.open(path + folder + 'criteriaANDcounts_out.txt', 'r')

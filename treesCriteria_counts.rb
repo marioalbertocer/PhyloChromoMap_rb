@@ -3,8 +3,8 @@
 # It needs the report from screipt bestOGsXseq
 
 path = '/Users/marioceron/Documents/katzlab/duplications/orthomcl-release5/'
-folder = 'Dictyostelium_discoideum/'
-major_clade = "am"  # options = "op","am","pl","ex","sr","ee","ba","za"
+folder = 'test2/'
+major_clade = "op"  # options = "op","am","pl","ex","sr","ee","ba","za"
 
 # Reading report of bestOGsXseq...
 listOGs = File.open(path + folder + 'bestOGsXseq_out.txt', 'r')
@@ -25,10 +25,10 @@ listOGs.each do |line|
 		criterion = 'no'
 		
 		# for each OG read the folder of the trees and read the tree for the OG		
-		treesDir = Dir.open(path + 'Pipelinev2_2_archive/')
+		treesDir = Dir.open(path + "/" + folder + 'Pipelinev2_2_archive/')
 		treesDir.each do |i|
 			if i.include? og
-				tree = File.open(path + 'Pipelinev2_2_archive/' + i, 'r')
+				tree = File.open(path + "/" + folder + 'Pipelinev2_2_archive/' + i, 'r')
 				tree = tree.readline()
 				
  				# As the trees are in neweck format, we can make a list of leaves by 

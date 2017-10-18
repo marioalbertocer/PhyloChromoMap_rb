@@ -1,8 +1,8 @@
 # This script takes the report from parseBLASTut.rb to pick the OGs with the 
 # best evalues per sequence. 
 
-summary = open("/Users/marioceron/Documents/katzlab/duplications/orthomcl-release5/Dictyostelium_discoideum/summary.txt", 'r') # path to the report from parseBLASTut.rb
-out = open("/Users/marioceron/Documents/katzlab/duplications/orthomcl-release5/Dictyostelium_discoideum/bestOGsXseq_out.txt", 'w') # path to the report from parseBLASTut.rb
+summary = open("/Users/marioceron/Documents/katzlab/duplications/orthomcl-release5/test2/summary.txt", 'r') # path to the report from parseBLASTut.rb
+out = open("/Users/marioceron/Documents/katzlab/duplications/orthomcl-release5/test2/bestOGsXseq_out.txt", 'w') # path to the report from parseBLASTut.rb
 summary = summary.readlines()
 
 list = Array.new()
