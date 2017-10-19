@@ -1,4 +1,4 @@
-'''
+"""
 This script will help to redistribute the genes that fall in the same interval on the map
 
 * case 1: A GENE FALL BETWEEN TWO INTERVALS
@@ -25,12 +25,12 @@ because their first codon is in the range 2000-3000. Then, mpInfoHelper.rb needs
 second gene in the interval 3000-4000. But, if intervals.rb already put another gene in the
 interval 3000-4000, then the second gene would not be mapped. Still, the record of location and 
 clade counting will be saved in the document notMappedGenes.txt
-
-'''
+"""
 
 folder = 'test2/'
 path = '/Users/marioceron/Documents/katzlab/duplications/orthomcl-release5/'
-#out = File.open(path + folder + 'mapInfo_corrected.txt', 'w')
+out = File.open(path + folder + 'mapInfo_corrected.txt', 'w')
+out2 = File.open(path + folder + 'notMappedGenes.txt', 'w')
 mapinfo = File.open(path + folder + 'mapInfo.txt', 'r')
 mapinfo = mapinfo.readlines()
 
@@ -44,13 +44,12 @@ while exe == 'y' do
 	# This is an iterative process. The explanation of the use of while loop here will be at 
 	# the end ...
 	
-	puts "exe: " + exe
 	run = run + 1
 	to_add = ""
 	count_changes = 0
 	map_corrected = Array.new()
 	
-	puts "RUN # " + run.to_s + ":\n" 
+	puts "\nRUN # " + run.to_s + ":\n" 
 	
 #	Reading mapInfo ...
 #	mapinfo.each do |line|
@@ -62,15 +61,15 @@ while exe == 'y' do
 		# It is going to print each line in the output exactly as in mapInfo except when there 
 		# is more than one sequence mapped in the same interval. When there is in a interval with
 		# more than one sequences, it prints only the first sequence for the current interval and saves 
-		# the remaining sequences in the global variable "to_add". For the next iteration, if the 
-		# interval is empty, it adds the remaining sequences saved in to_add. Before ending the iteration 
-		# to_add sould be set to "" again, so that it can be used in a further iterations with
-		# interval containing two sequences. 
-		# ----------------------------
+		# the remaining sequences in the global variable "to_add". Then it checks if the knext interval 
+		# if empty and redistribute the genes saved in to_add following the logic described in the 
+		# cases above
+		# ---------------------------
 
 		if values.length >= 24	# if two or more sequences in the current interval ...		
 			first = values[0..12] * "\t"  # takes the first seq
-			rest = values[13..23] * "\t"  # takes the second seq
+			rest = values[13..-1] * "\t"  # takes the remaining seqs
+			out2.write(to_add + "\n") if to_add != ""
 			to_add = "" 
 			to_add = rest		# put the remaining sequences in global variable "to_add"
 			line = first		# modify the line of mapInfo and print the interval with 
@@ -83,26 +82,46 @@ while exe == 'y' do
 		# the previous iteration by adding the global variable "to_add" to the line of mapinfo
 	
 		if values.length == 2
-			if to_add != ""
-				if values[1].to_i < ((to_add.split("\t")[0]).split("-")[1]).to_i # if the gene is still inside the range
+		
+			# ----------------------------
+			# If the next interval is empty it checks if there are genes saved in to_add. If so, and 
+			# part of the first gene (in to_add) falls in this interval, it adds to_add to the interval(*).
+			# In contrast, if the gene falls totally in the last interval, it removes the gene from to_add, 
+			# takes the next gene from to_add and repeats the procedure. The records of clade counting and
+			# locus for every gene that does not fall in the interval (and therefore removed from to_add) is
+			# saved in notMappedGenes.txt
+			# ----------------------------
+			
+			while to_add != "" do
+				remainingGenes = to_add.split("\t")
+				if values[1].to_i < (remainingGenes[0].split("-")[1]).to_i # if first gene is still inside the range
 					count_changes += 1
 					line = line + "\t" + to_add
 					to_add = ""	# After this iteration to_add should be set to ""
+				else
+					count_changes += 1
+					not_mapped = remainingGenes[0..10] * "\t"
+					out2.write(not_mapped + "\n")
+					
+					if remainingGenes[11]
+						remainingGenes = remainingGenes[11..-1]
+						to_add = remainingGenes * "\t"
+					else
+						to_add = "" # After this iteration to_add should be set to ""
+					end
 				end
-			
-				puts line
-				map_corrected << line
-
-			else
-				puts line 
-				map_corrected << line
 			end
+			
+			puts line
+			map_corrected << line
+
 		end
 	
 		# if the next iteration interval containing either one sequence or more than 2, it
 		# would print the line of mapinfo without any modification. 
 	
 		if (values.length == 13)
+			out2.write(to_add + "\n") if to_add != ""
 			to_add = ""
 			puts line
 			map_corrected << line
@@ -111,14 +130,24 @@ while exe == 'y' do
 	
 	map = map_corrected
 	
-	puts "count_changes: " + count_changes.to_s
+	puts "number of changes: " + count_changes.to_s
 	if count_changes == 0
 		exe = 'n' 
-		puts "here is the exe: " + exe
 	end
 	
 	# This is an iterative process. It will redistribute the second gene in each interval that 
 	# has more than one gene. Then the whole process is repeted for redistributing the third genes
-	# and so on.
+	# and so on. The variable count_changes tacks the number of changes per iteration, if there
+	# are not more changes in an iteration then the loop stops. 
 	
+end
+
+# ----------------------------
+# Writing mapInfo_corrected   |
+# ----------------------------
+
+puts "\n\n===== mapInfo_corrected =====\n\n"
+map.each do |line|
+	puts line
+	out.write(line + "\n")
 end
