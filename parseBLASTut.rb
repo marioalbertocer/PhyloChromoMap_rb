@@ -5,7 +5,7 @@
 
 path = '/Users/marioceron/Documents/katzlab/duplications/orthomcl-release5/test2/BlastReports/'
 
-out = File.open(path + '../summary.txt', 'w')
+out = File.open(path + '../summary.csv', 'w')
 
 reportsBlast = Dir.open(path)
 
@@ -53,8 +53,10 @@ reportsBlast.each do |reportChr|
 					line = line.gsub(/\s\|\s/, "\|")
 					line = line.gsub(/\|\s+/, "\|no description\|")
 					line = line.gsub(/\s{2,}/, "\|")
-					values = line.gsub(/\s{2,}|\|/,"\t")
-					values = values.split("\t")
+#					values = line.gsub(/\s{2,}|\|/,"\t")
+					values = line.gsub(/\s{2,}|\|/,",")
+#					values = values.split("\t")
+					values = values.split(",")
 #					puts values
 					
 					sps = values[0]
@@ -66,16 +68,14 @@ reportsBlast.each do |reportChr|
 					
 					if e_val < 1e-15
 						print reportChr + "\t" + query + "\t" + sps + "\t" + access + "\t" + og + "\t"  
-						out.write(reportChr + "\t" + query + "\t" + sps + "\t" + access + "\t" + og + "\t")
+#						out.write(reportChr + "\t" + query + "\t" + sps + "\t" + access + "\t" + og + "\t")
+						out.write(reportChr + "," + query + "," + sps + "," + access + "," + og + ",")
 						print description + "\t" + score.to_s + "\t" + e_val.to_s + "\n"
-						out.write(description + "\t" + score.to_s + "\t" + e_val.to_s + "\n")
+#						out.write(description + "\t" + score.to_s + "\t" + e_val.to_s + "\n")
+						out.write(description + "," + score.to_s + "," + e_val.to_s + "\n")
 					end
 				end
 			end
 		end
 	end
 end
-					
-			
-			
-	

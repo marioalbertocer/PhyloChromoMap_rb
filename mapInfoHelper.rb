@@ -29,9 +29,9 @@ clade counting will be saved in the document notMappedGenes.txt
 
 folder = 'test2/'
 path = '/Users/marioceron/Documents/katzlab/duplications/orthomcl-release5/'
-out = File.open(path + folder + 'mapInfo_corrected.txt', 'w')
-out2 = File.open(path + folder + 'notMappedGenes.txt', 'w')
-mapinfo = File.open(path + folder + 'mapInfo.txt', 'r')
+out = File.open(path + folder + 'mapInfo_corrected.csv', 'w')
+out2 = File.open(path + folder + 'notMappedGenes.csv', 'w')
+mapinfo = File.open(path + folder + 'mapInfo.csv', 'r')
 mapinfo = mapinfo.readlines()
 
 map = mapinfo
@@ -55,7 +55,8 @@ while exe == 'y' do
 #	mapinfo.each do |line|
 	map.each do |line|
 		line = line.sub(/\n$/, "") if line =~ /\n$/
-		values = line.split("\t")
+#		values = line.split("\t")
+		values = line.split(",")
 	
 		# ---------------------------
 		# It is going to print each line in the output exactly as in mapInfo except when there 
@@ -67,8 +68,10 @@ while exe == 'y' do
 		# ---------------------------
 
 		if values.length >= 24	# if two or more sequences in the current interval ...		
-			first = values[0..12] * "\t"  # takes the first seq
-			rest = values[13..-1] * "\t"  # takes the remaining seqs
+#			first = values[0..12] * "\t"  # takes the first seq
+			first = values[0..12] * ","  # takes the first seq
+#			rest = values[13..-1] * "\t"  # takes the remaining seqs
+			rest = values[13..-1] * ","  # takes the remaining seqs
 			out2.write(to_add + "\n") if to_add != ""
 			to_add = "" 
 			to_add = rest		# put the remaining sequences in global variable "to_add"
@@ -93,19 +96,23 @@ while exe == 'y' do
 			# ----------------------------
 			
 			while to_add != "" do
-				remainingGenes = to_add.split("\t")
+#				remainingGenes = to_add.split("\t")
+				remainingGenes = to_add.split(",")
 				if values[1].to_i < (remainingGenes[0].split("-")[1]).to_i # if first gene is still inside the range
 					count_changes += 1
-					line = line + "\t" + to_add
+#					line = line + "\t" + to_add
+					line = line + "," + to_add					
 					to_add = ""	# After this iteration to_add should be set to ""
 				else
 					count_changes += 1
-					not_mapped = remainingGenes[0..10] * "\t"
+#					not_mapped = remainingGenes[0..10] * "\t"
+					not_mapped = remainingGenes[0..10] * ","					
 					out2.write(not_mapped + "\n")
 					
 					if remainingGenes[11]
 						remainingGenes = remainingGenes[11..-1]
-						to_add = remainingGenes * "\t"
+#						to_add = remainingGenes * "\t"
+						to_add = remainingGenes * ","
 					else
 						to_add = "" # After this iteration to_add should be set to ""
 					end

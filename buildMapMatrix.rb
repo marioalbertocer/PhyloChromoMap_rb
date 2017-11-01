@@ -1,15 +1,15 @@
 # Paths and values to be set.
 path = '/Users/marioceron/Documents/katzlab/duplications/orthomcl-release5/'
-folder = 'Dictyostelium_discoideum/'
-inFile = File.open(path + folder + 'mapInfo_corrected_post.txt', 'r')
+folder = 'test2/'
+inFile = File.open(path + folder + 'mapInfo_corrected.csv', 'r')
 inFile = inFile.readlines()
-criteriaFile = File.open(path + folder + 'criteriaANDcounts_out.txt', 'r')
+criteriaFile = File.open(path + folder + 'criteriaANDcounts_out.csv', 'r')
 criteriaFile = criteriaFile.readlines()
 seqsDir = Dir.open(path + folder + 'seqs/')
 #out1 = File.open(path + folder + 'freqs4map.txt', 'w')
-out2 = File.open(path + folder + 'matrix-raw.txt', 'w')
-out3 = File.open(path + folder + 'matrix4map.txt', 'w')
-minor_clade = "am"  # options = "op","am","pl","ex","sr","ee","ba","za"
+out2 = File.open(path + folder + 'matrix-raw.csv', 'w')
+out3 = File.open(path + folder + 'matrix4map.csv', 'w')
+minor_clade = "op"  # options = "op","am","pl","ex","sr","ee","ba","za"
 
 if minor_clade == "op"
 	majors = ["op","am","ex","ee","pl","sr","za","ba"] 
@@ -62,9 +62,9 @@ chrs = Array.new
 
 criteriaFile.each do |line|
 	if line !~ /\tyes\t/
-		chr = line.split("\t")[0]
+		chr = line.split(",")[0]		
 		chr = chr.split(".")[0]
-		seq = line.split("\t")[1]
+		seq = line.split(",")[1]		
 		chrs << chr
 		
 		# Onpening CDSs files...
@@ -82,7 +82,7 @@ criteriaFile.each do |line|
 							locus = locus.sub(/^.*\(/, "")
 							locus = locus.sub(/(,|(\.\.)).*$/, "")
 							locus = locus.gsub(/>|</, "")
-							young_loci <<  chr + "\t" + locus.to_s
+							young_loci <<  chr + "," + locus.to_s
 							puts chr + "\t" + locus.to_s
 							
 							# microsporidia data
@@ -106,8 +106,8 @@ intervals = Array.new
 freqs = Array.new
 inFile.each do |line|
 	line = line.chomp
-	line = line.sub(/\t*$/, "")
-	values = line.split("\t")
+	line = line.sub(/,*$/, "")
+	values = line.split(",")
 	
 	chr = values[0]
 	interval = values[1]
@@ -123,35 +123,14 @@ inFile.each do |line|
 		m5 = (values[10].to_f / totalMinors[5].to_f).round(2)
 		m6 = (values[11].to_f / totalMinors[6].to_f).round(2)
 		m7 = (values[12].to_f / totalMinors[7].to_f).round(2)
-		counts = [m0, m1, m2, m3, m4, m5, m6, m7].join("\t")
-
-#		pl = ((values[5].sub(/counts:/, "")).to_f / totalMinors[0].to_f).round(2)
-#		ee = (values[6].to_f / totalMinors[1].to_f).round(2)
-#		sr = (values[7].to_f / totalMinors[2].to_f).round(2)
-#		ex = (values[8].to_f / totalMinors[3].to_f).round(2)
-#		am = (values[9].to_f / totalMinors[4].to_f).round(2)
-#		op = (values[10].to_f / totalMinors[5].to_f).round(2)
-#		za = (values[11].to_f / totalMinors[6].to_f).round(2)
-#		ba = (values[12].to_f / totalMinors[7].to_f).round(2)
-#		counts = [pl, ee, sr, ex, am, op, za, ba].join("\t")
-
-#		op = ((values[5].sub(/counts:/, "")).to_f / totalMinors[0].to_f).round(2)
-#		am = (values[6].to_f / totalMinors[1].to_f).round(2)
-#		pl = (values[7].to_f / totalMinors[2].to_f).round(2)
-#		ex = (values[8].to_f / totalMinors[3].to_f).round(2)
-#		sr = (values[9].to_f / totalMinors[4].to_f).round(2)
-#		ee = (values[10].to_f / totalMinors[5].to_f).round(2)
-#		ba = (values[11].to_f / totalMinors[6].to_f).round(2)
-#		za = (values[12].to_f / totalMinors[7].to_f).round(2)
-#		counts = [op, am, pl, ex, sr, ee, ba, za].join("\t")
-
+		counts = [m0, m1, m2, m3, m4, m5, m6, m7].join(",")
 		young = "n"
 	else
-		counts = ([0] * 8).join("\t")
+		counts = ([0] * 8).join(",")		
 		
 		young_loci.each do |locus|
-			chr_y = locus.split("\t")[0]
-			locus = locus.split("\t")[1]
+			chr_y = locus.split(",")[0]
+			locus = locus.split(",")[1]
 			
 			young = "n"
 			if chr == chr_y
@@ -165,8 +144,8 @@ inFile.each do |line|
 		end		
 	end
 	puts chr + "\t" + interval.to_s + "\t" + young + "\t" + counts
-	freqs << (chr + "\t" + interval.to_s + "\t" + young + "\t" + counts)
-#	out1.write(chr + "\t" + interval.to_s + "\t" + counts)
+	freqs << (chr + "," + interval.to_s + "," + young + "," + counts)
+#	out1.write(chr + "," + interval.to_s + "," + counts)
 end
 
 chrs.uniq!
@@ -177,19 +156,18 @@ index = 0
 map.each do |interval|
 	puts interval
 	index = index + 1
-	interval_only = interval.split("\t")[0]
-	to_replace = (["NA"] * 9).join("\t")	
-	to_replace_cod = (["NA"] * 10).join("\t")	
+	interval_only = interval.split(",")[0]
+	to_replace = (["NA"] * 9).join(",")		
+	to_replace_cod = (["NA"] * 10).join(",")	
 
 	chrs.each do |chr|
 		freqs.each do |seq2map|
-			to_replace = (["NA"] * 9).join("\t")	
-			to_replace_cod = (["NA"] * 10).join("\t")
-			seq2map = seq2map.split("\t")
-			chr_int2map = seq2map[0] + "\t" + seq2map[1]
+			to_replace = (["NA"] * 9).join(",")	
+			to_replace_cod = (["NA"] * 10).join(",")
+			seq2map = seq2map.split(",")
+			chr_int2map = seq2map[0] + "," + seq2map[1]
 			if (chr_int2map.include? chr) and (chr_int2map.include? interval_only)
-				to_replace = seq2map[2..seq2map.length].join("\t")
-				
+				to_replace = seq2map[2..seq2map.length].join(",")
 				counts2cod = seq2map[3..seq2map.length]				
 				minor = 0
 				coded_counts = Array.new
@@ -224,13 +202,13 @@ map.each do |interval|
 					coded_young = young_code[seq2map[2]] 
 				end
 				
-				to_replace_cod = young_code["y"].to_s + "\t" + coded_young.to_s + "\t" + coded_counts.join("\t")
+				to_replace_cod = young_code["y"].to_s + "," + coded_young.to_s + "," + coded_counts.join(",")
 				break 
 			end
 		end
 		
-		newline_map = map[index - 1] + "\t" + to_replace + "\t"
-		newline_map_cod = map_cod[index - 1] + "\t" + to_replace_cod + "\t"
+		newline_map = map[index - 1] + "," + to_replace + ","
+		newline_map_cod = map_cod[index - 1] + "," + to_replace_cod + ","
 		map[index - 1] = newline_map
 		map_cod[index - 1] = newline_map_cod
 	end
@@ -239,9 +217,10 @@ end
 index = 0
 map.each do |line|
 	index = index + 1
-	values = line.split("\t")
+	values = line.split(",")
 	puts "number of chromosomes: " + ((values.length) / 9).to_s
 	out2.write(line + "\n")
 	out3.write(map_cod[index -1] + "\n")
 end
 
+system "Rscript --vanilla ./buildMap.R " + path + folder + "matrix4map.csv " + path + folder + "chromomap.pdf"

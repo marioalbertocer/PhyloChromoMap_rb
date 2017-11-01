@@ -11,8 +11,8 @@
 
 folder = 'test2/'
 path = '/Users/marioceron/Documents/katzlab/duplications/orthomcl-release5/'
-out = File.open(path + folder + 'mapInfo.txt', 'w')
-toMap = File.open(path + folder + 'criteriaANDcounts_out.txt', 'r')
+out = File.open(path + folder + 'mapInfo.csv', 'w')
+toMap = File.open(path + folder + 'criteriaANDcounts_out.csv', 'r')
 toMap = toMap.readlines()
 
 chrDir = Dir.open(path + folder + 'genome/')
@@ -56,12 +56,14 @@ chrDir.each do |chrFile|
 			if line.include? chr		# As we are working per chromosome (see first loop above). Then we need to filter the lines 
 										# that containg that chromosome
 				if line !~ /no_group/				# We just need OGs, no 'no_groups'
-					values = line.split("\t")
+#					values = line.split("\t")
+					values = line.split(",")
 					seq = values[1]
 					og = values[2]
 					criterion = values[5]
 					counts = values[6..13]
-					counts = counts * "\t"
+#					counts = counts * "\t"
+					counts = counts * ","
 				
 					if criterion =~ /yes/	# only consider OGs that meet our criterion
 						cdsFile.each do |line2|		
@@ -89,7 +91,8 @@ chrDir.each do |chrFile|
 								loci_sorted = loci_sorted.sort
  	 							end
  	 							 	 							
-								toMap_loci << "locus:" + loci_sorted[0].to_s + "-" + loci_sorted[-1].to_s + "\t" + "seqID:" + seq + "\t" + "OG:" + og + "\t" + "counts:" + counts
+#								toMap_loci << "locus:" + loci_sorted[0].to_s + "-" + loci_sorted[-1].to_s + "\t" + "seqID:" + seq + "\t" + "OG:" + og + "\t" + "counts:" + counts
+								toMap_loci << "locus:" + loci_sorted[0].to_s + "-" + loci_sorted[-1].to_s + "," + "seqID:" + seq + "," + "OG:" + og + "," + "counts:" + counts
 							end
 						end
 					end
@@ -100,7 +103,8 @@ chrDir.each do |chrFile|
 		intervals.each do |interval|
 			neighbors = Array.new()
 			toMap_loci.each do |toMap_locus|
-				locus = toMap_locus.split("\t")[0]
+#				locus = toMap_locus.split("\t")[0]
+				locus = toMap_locus.split(",")[0]
 				locus = locus.sub(/locus:/, "")
 				locus = locus.split("-")[0]
 				if locus.to_i >= interval
@@ -112,11 +116,14 @@ chrDir.each do |chrFile|
 		
 			if neighbors == []
 				puts chr + "\t" + interval.to_s
-				out.write(chr + "\t" + interval.to_s + "\n")
+#				out.write(chr + "\t" + interval.to_s + "\n")
+				out.write(chr + "," + interval.to_s + "\n")			
 			else
-				neighbors = neighbors * "\t"
+#				neighbors = neighbors * "\t"
+				neighbors = neighbors * ","
 				puts chr + "\t" + interval.to_s + "\t" + neighbors
-				out.write(chr + "\t" + interval.to_s + "\t" + neighbors + "\n")
+#				out.write(chr + "\t" + interval.to_s + "\t" + neighbors + "\n")
+				out.write(chr + "," + interval.to_s + "," + neighbors + "\n")
 			end
 		end						
 	end	
