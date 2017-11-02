@@ -5,8 +5,45 @@
 # those few cases by with the script 'mapInfoHelper'.
 
 # Input: 
-# - criteriaANDcounts_out.txt from 'treesCriteria_counts'
+# - criteriaANDcounts_out.txt from 'treesCriteria_counts' -- (path2files)
 # - m_interval (number of nucleotides that separates each interval)
+# - chromosomes size file
+
+module Intervals2
+
+	def Intervals2.mapIntervals(path2files, m_interval, chromoSizeFile)
+	
+		out = File.open(path2files + '/mapInfo.csv', 'w')
+		toMap = File.open(path2files + "/criteriaANDcounts_out.csv", 'r').readlines()
+		chromosize = File.open(chromoSizeFile, "r").readline()
+		
+		chromosize.each do |chr_line|
+			intervals = Array.new
+			chr = chr_line.split(",")[0]
+			chrLen = (chr_line.split(",")[1]).gsub(/\n/, "")
+
+			m = m_interval  # length of the intervals
+			position = 1
+			intervals << position
+			
+			while (position <= chrLen)
+				position = position + m
+				intervals << position
+			end		
+			
+			# At this point the intervals are already done and saved in a array. Now we are going 
+			# to read the coding sequences. In future lines we will use them for grabbing the loci from the tags. 
+			cdsFile = File.open(path + folder + 'seqs/' + chr + '.txt', 'r')
+			cdsFile = cdsFile.readlines()
+			counts = values[7..14]
+			
+			
+		end
+		
+	end
+end
+
+
 
 folder = 'test2/'
 path = '/Users/marioceron/Documents/katzlab/duplications/orthomcl-release5/'
@@ -47,6 +84,7 @@ chrDir.each do |chrFile|
 		# to read the coding sequences. In future lines we will use them for grabbing the loci from the tags. 
 		cdsFile = File.open(path + folder + 'seqs/' + chr + '.txt', 'r')
 		cdsFile = cdsFile.readlines()
+		counts = values[6..13]
 		
 		# Now we need the data that we are going to map in the intervals. So, we take the info from 'criteriaANDcounts_out'
 		toMap_loci = Array.new()

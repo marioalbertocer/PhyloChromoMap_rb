@@ -5,7 +5,7 @@
 * trees folder:	 Pipelinev2_2_archive										
 
 ### Name of file containing chromosomes sizes
-* chromosome size file: lela									
+* chromosome size file: chromosize.csv
 
 ### Name of file containing the mapping information
 * mapping file: mapFile.csv											
