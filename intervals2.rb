@@ -32,14 +32,22 @@ module Intervals2
 			end		
 			
 			# At this point the intervals are already done and saved in a array. Now we are going 
-			# to read the coding sequences. In future lines we will use them for grabbing the loci from the tags. 
-			cdsFile = File.open(path + folder + 'seqs/' + chr + '.txt', 'r')
-			cdsFile = cdsFile.readlines()
-			counts = values[7..14]
-			
-			
-		end
-		
+			# grab the loci and clades counts from criteriaANDcounts_out
+			toMap_loci = Array.new()
+			toMap.each do |line|
+				line = line.sub(/\n$/, "")
+				if line.include? chr		# As we are working per chromosome (see first loop above). Then we need to filter the lines 
+					if line !~ /no_tree/
+						values = line.split(",")
+						locus_s = values[1] # locus start
+						locus_e = values[2] # locus end
+						seq = values[3]
+						og = values[4]
+						criterion = values[5]
+					end
+				end
+			end			
+		end		
 	end
 end
 
