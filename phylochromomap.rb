@@ -1,4 +1,5 @@
 require "./treesCriteria_counts2"
+require "/.intervals2.rb"
 
 def get_parameters
 	path2files = ''
@@ -67,6 +68,9 @@ def main
 	
 	result_counts = TreesCriteria_counts2.count(path2files, treesFolder, majorClade, mappingFile, criterion)
 	puts result_counts
+	result_mapIntervals = Intervals2.mapIntervals(path2files, m_interval, chromoSizeFile)
+	puts result_mapIntervals
+	
 end
 
 main
