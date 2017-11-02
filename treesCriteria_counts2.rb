@@ -67,17 +67,17 @@ module TreesCriteria_counts2
 				# The report is corrected with criterion and counts and printed in the terminal
 
 				if majorClade == "op"
-					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, criterion_meet, op, am, ex, ee, pl, sr, za, ba]
+					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, criterion_meet, op, am, ex, ee, pl, sr, za, ba]
 				elsif majorClade == "am"
-					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, criterion_meet, am, op, ex, ee, pl, sr, za, ba]
+					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, criterion_meet, am, op, ex, ee, pl, sr, za, ba]
 				elsif majorClade == "ex"
-					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, criterion_meet, ex, ee, pl, sr, am, op, za, ba] 
+					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, criterion_meet, ex, ee, pl, sr, am, op, za, ba] 
 				elsif majorClade == "ee"
-					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, criterion_meet, ee, pl, sr, ex, am, op, za, ba] 		
+					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, criterion_meet, ee, pl, sr, ex, am, op, za, ba] 		
 				elsif majorClade == "pl"
-					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, criterion_meet, pl, ee, sr, ex, am, op, za, ba] 
+					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, criterion_meet, pl, ee, sr, ex, am, op, za, ba] 
 				elsif majorClade == "sr"
-					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, criterion_meet, sr, pl, ee, ex, am, op, za, ba]
+					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, criterion_meet, sr, pl, ee, ex, am, op, za, ba]
 				end
 			
 				puts new_line

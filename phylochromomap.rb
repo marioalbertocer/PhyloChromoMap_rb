@@ -64,7 +64,7 @@ end
 def main		
 	
 	path2files , treesFolder , chromoSizeFile , mappingFile , majorClade , minorsXmajor, criterion, m_interval = get_parameters
-
+	
 	result_counts = TreesCriteria_counts2.count(path2files, treesFolder, majorClade, mappingFile, criterion)
 	puts result_counts
 end
