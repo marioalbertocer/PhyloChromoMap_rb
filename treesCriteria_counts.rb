@@ -17,7 +17,6 @@ listOGs.each do |line|
 
 	#some of the lines in the report says that there is not an OG, so it avoids those ones
 	if line =~ /OG5_/
-#		og = line.split("\t")[2]
 		og = line.split(",")[2]
 		
 		minCs = Array.new()
@@ -73,25 +72,6 @@ listOGs.each do |line|
 		end
 			
  		# The report is corrected with criterion and counts and printed in the terminal
-
-#		if major_clade == "op"
-#		 	puts "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s" % [line, og, criterion, op, am, ex, ee, pl, sr, za, ba]
-# 			out.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % [line, og, criterion, op, am, ex, ee, pl, sr, za, ba]) 
-#		elsif major_clade == "am"
-#		 	puts "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s" % [line, og, criterion, am, op, ex, ee, pl, sr, za, ba]
-# 			out.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % [line, og, criterion, am, op, ex, ee, pl, sr, za, ba]) 
-#		elsif major_clade == "ex"
-#		 	puts "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s" % [line, og, criterion, ex, ee, pl, sr, am, op, za, ba]
-# 			out.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % [line, og, criterion, ex, ee, pl, sr, am, op, za, ba]) 
-#		elsif major_clade == "ee"
-#			puts "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s" % [line, og, criterion, ee, pl, sr, ex, am, op, za, ba]
-# 			out.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % [line, og, criterion, ee, pl, sr, ex, am, op, za, ba]) 		
-#		elsif major_clade == "pl"
-#			puts "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s" % [line, og, criterion, pl, ee, sr, ex, am, op, za, ba]
-# 			out.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % [line, og, criterion, pl, ee, sr, ex, am, op, za, ba]) 
-#		elsif major_clade == "sr"
-#			puts "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s" % [line, og, criterion, sr, pl, ee, ex, am, op, za, ba]
-# 			out.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % [line, og, criterion, sr, pl, ee, ex, am, op, za, ba])
 
 		if major_clade == "op"
 		 	puts "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, og, criterion, op, am, ex, ee, pl, sr, za, ba]

@@ -9,9 +9,7 @@ list = Array.new()
 
 # here we build a list like "chromosome	sequence"
 summary.each do |line|
-#	line = line.split("\t")
 	line = line.split(",")
-#	list << line[0] + "\t" + line[1]
 	list << line[0] + "," + line[1]
 end	
 
@@ -20,7 +18,6 @@ list.uniq!	# Creating categories. The same "chromosome	sequence" can be many tim
 			# and more than one sps. 
  
 list.each do |line|
-#	line = line.split("\t")
 	line = line.split(",")
 	chr = line[0]
 	seq = line[1]
@@ -32,7 +29,6 @@ list.each do |line|
 	summary.each do |line2| # for each category (chr seq) read the report again
 		if line2.include? chr
 			if line2.include? seq
-#				line2 = line2.split("\t")
 				line2 = line2.split(",")
 				e_val = line2[-1].to_f # from each blast result per category collect eval 
 				og = line2[4] # ... and og
@@ -60,6 +56,5 @@ list.each do |line|
 	end
 	
 	puts chr + "\t" + seq + "\t" + pickedOG.to_s + "\t" + pickedEval.to_s
-#	out.write(chr + "\t" + seq + "\t" + pickedOG.to_s + "\t" + pickedEval.to_s + "\n")
 	out.write(chr + "," + seq + "," + pickedOG.to_s + "," + pickedEval.to_s + "\n")
 end

@@ -1,24 +1,24 @@
-# 	# This script is for counting presence/absence of minor clades in trees
-# 	# It also says if a tree contains more than 10 leaves (criterion)
-# 	# It needs the report from screipt bestOGsXseq
+# This script is for counting presence/absence of minor clades in trees
+# It also says if a tree contains more than 10 leaves (criterion)
+# It needs the mapping file and the gene trees database
 
 module TreesCriteria_counts2
 
-	def TreesCriteria_counts2.count(path2files, treesFolder, majorClade, mappingFile)			
+	def TreesCriteria_counts2.count(path2files, treesFolder, majorClade, mappingFile, criterion)
 		listOGs = File.open(path2files + "/" + mappingFile, 'r').readlines()
 		out = File.open(path2files + "/" + 'criteriaANDcounts_out.csv', 'w')
 		counts = Array.new
 
 		listOGs.each do |line|
 			line = line.sub(/\n/, "")
-			tree_code = line.split(",")[3]
+			tree_code = line.split(",")[4]
 			
 			if tree_code != "no_tree"
 				minCs = Array.new()
 				op = am = pl = ex = sr = ee = ba = za = 0
-				criterion = 'no'
+				criterion_meet = 'no'
 
-				# for each OG read the folder of the trees and read the tree for the OG
+				# take each gene tree from the gene trees database
 				trees = Dir.open(path2files + "/" + treesFolder)
 				trees.each do |i|
 					if i.include? tree_code
@@ -29,19 +29,20 @@ module TreesCriteria_counts2
 						# splitting the tree by the comas.
 						tree = tree.split(',')
 
-						# if there are more than 10 leaves in the tree, it meets the criterion
-						if tree.length > 10
-							criterion = 'yes'
+						# if there are more than X leaves in the tree, it meets the criterion
+						# X is defined by the user in the parameters file
+						if tree.length > criterion.to_i
+							criterion_meet = 'yes'
+						end
  
-							# Here we are going to clean the leaves, so that we can extract
-							# the major clade and minor clade (e.g., Sr_di).
-							# We collect all cleaned leaves in a list.
-							tree.each do |leaf|
-								leaf = leaf.gsub(/\(/, "")
-								leaf = leaf.gsub(/\)/, "")
-								leaf = leaf.split("_")
-								minCs << leaf[0] + "_" + leaf[1]		
-							end
+						# Here we are going to clean the leaves, so that we can extract
+						# the major clade and minor clade (e.g., Sr_di).
+						# We collect all cleaned leaves in a list.
+						tree.each do |leaf|
+							leaf = leaf.gsub(/\(/, "")
+							leaf = leaf.gsub(/\)/, "")
+							leaf = leaf.split("_")
+							minCs << leaf[0] + "_" + leaf[1]		
 						end	
  
 						# Now that we have all the leaves (as Sr_di) in a list, we need to 
@@ -66,17 +67,17 @@ module TreesCriteria_counts2
 				# The report is corrected with criterion and counts and printed in the terminal
 
 				if majorClade == "op"
-					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, tree_code, criterion, op, am, ex, ee, pl, sr, za, ba]
+					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, tree_code, criterion_meet, op, am, ex, ee, pl, sr, za, ba]
 				elsif majorClade == "am"
-					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, tree_code, criterion, am, op, ex, ee, pl, sr, za, ba]
+					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, tree_code, criterion_meet, am, op, ex, ee, pl, sr, za, ba]
 				elsif majorClade == "ex"
-					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, tree_code, criterion, ex, ee, pl, sr, am, op, za, ba] 
+					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, tree_code, criterion_meet, ex, ee, pl, sr, am, op, za, ba] 
 				elsif majorClade == "ee"
-					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, tree_code, criterion, ee, pl, sr, ex, am, op, za, ba] 		
+					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, tree_code, criterion_meet, ee, pl, sr, ex, am, op, za, ba] 		
 				elsif majorClade == "pl"
-					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, tree_code, criterion, pl, ee, sr, ex, am, op, za, ba] 
+					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, tree_code, criterion_meet, pl, ee, sr, ex, am, op, za, ba] 
 				elsif majorClade == "sr"
-					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, tree_code, criterion, sr, pl, ee, ex, am, op, za, ba]
+					new_line = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % [line, tree_code, criterion_meet, sr, pl, ee, ex, am, op, za, ba]
 				end
 			
 				puts new_line

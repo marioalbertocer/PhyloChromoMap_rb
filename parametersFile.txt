@@ -24,6 +24,7 @@
 * minor clades ZA (Archaea): nela
 
 ### minimum number of leaves per tree
-* criterion:												
+* criterion: 10											
 
-
+### Number of nucleotides separating each interval in the map
+* m_interval: 1000
