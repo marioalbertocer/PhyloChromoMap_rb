@@ -1,5 +1,5 @@
 # PhyloChromoMap_rb
-PhyloChromoMap: Tool to display phylogenetic history in chromosomes (written in ruby)
+PhyloChromoMap: A tool to display phylogenetic history in chromosomes (written in ruby)
 
 1. parseBLASTut.rb
 2. bestOGsXseq.rb
